@@ -52,12 +52,15 @@ for gpio in led_color_gpio.values():
     GPIO.output(bcm_pin, True)
 
 
+print("Type 'quit' to quit")
 while True:
     user_input = raw_input("Enter Color and on/off: ")
     tokens = user_input.split()
     if len(tokens) < 1:
         continue
     color = tokens[0]
+    if color == "quit":
+        break
     onoff = 1
     if len(tokens) > 1:
         onoff = tokens[1]
@@ -68,3 +71,8 @@ while True:
         else:
             onoff = int(onoff)
     led_color(color, onoff)
+
+
+for gpio in led_color_gpio.values():
+    bcm_pin = gpio_to_bcm[gpio]
+    GPIO.output(bcm_pin, True)
