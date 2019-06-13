@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import RPi.GPIO as GPIO
 
+GPIO.setwarnings(False)
+
 led_color_gpio = {
     'yellow': 0,
     'orange': 2,
@@ -46,7 +48,6 @@ def led_color(color, on):
 
 GPIO.setmode(GPIO.BCM)
 for gpio in led_color_gpio.values():
-    print("setting gpio {0} BCM pin {1}".format(gpio, gpio_to_bcm[gpio]))
     bcm_pin = gpio_to_bcm[gpio]
     GPIO.setup(bcm_pin, GPIO.OUT)
     GPIO.output(bcm_pin, True)
