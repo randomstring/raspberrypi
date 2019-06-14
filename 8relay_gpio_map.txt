@@ -1,0 +1,12 @@
+Map outliet relay to the GPIO controlling it. This is for my relay build.
+
+| relay | GPIO |
+|-------+------|
+|     1 |    7 |
+|     2 |    0 |
+|     3 |    2 |
+|     4 |    3 |
+|     5 |    4 |
+|     6 |    5 |
+|     7 |    6 |
+|     8 |   27 |
