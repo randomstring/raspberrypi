@@ -1,13 +1,14 @@
+#
+# Test script for controlling a servo motor via a raspberry pi servo hat.
+#
+# See:
+# https://learn.adafruit.com/adafruit-16-channel-pwm-servo-hat-for-raspberry-pi/overview
+#
+
 import sys
 import getopt
 from adafruit_servokit import ServoKit
 from time import sleep
-
-# import board
-# import busio
-# import adafruit_pca9685
-# i2c = busio.I2C(board.SCL, board.SDA)
-# hat = adafruit_pca9685.PCA9685(i2c)
 
 def main(argv):
     kit = ServoKit(channels=16)
@@ -20,11 +21,16 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hs:a:m:M:r:",["servo=","angle=","min=","max=","range="])
     except getopt.GetoptError:
-        print('test.py -s <servo> -a <angle>')
+        print('test_servohat.py -s <servo> -a <angle> -m <min_pw> -M <max_pw> -r <actuator_range>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('test.py -s <servo> -a <angle>')
+            print('test_servohat.py -s <servo> -a <angle> -m <min_pw> -M <max_pw> -r <actuator_range>')
+            print('  -s <servo>   servo id number (0-15) on the servo hat')
+            print('  -a <angle>   angle to drive servo to')
+            print('  -m <min_pw>  minimum pulse width in microseconds (default 1000)')
+            print('  -M <max_pw>  minimum pulse width in microseconds (default 2000)')
+            print('  -r <range>   range of motion in degrees (default 180)')
             sys.exit()
         elif opt in ("-s", "--servo"):
             servo = int(arg)
@@ -52,6 +58,7 @@ def main(argv):
     # https://www.servocity.com/hs-785hb-servo
     # set_puse_range(685, 2070)
     # actuation_range = 2160 (6 * 360)
+    # gets 6 full rotations, rated for up to 8 full rotations
 
     kit.servo[servo].actuation_range = actuation_range
     kit.servo[servo].set_pulse_width_range(pw_min, pw_max)
