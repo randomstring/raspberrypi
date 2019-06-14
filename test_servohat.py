@@ -14,8 +14,11 @@ def main(argv):
 
     servo = 0
     angle = 0
+    pw_min = 1000
+    pw_max = 2000
+    actuation_range = 180
     try:
-        opts, args = getopt.getopt(argv,"hs:a:",["servo=","angle="])
+        opts, args = getopt.getopt(argv,"hs:a:m:M:r:",["servo=","angle=","min=","max=","range="])
     except getopt.GetoptError:
         print('test.py -s <servo> -a <angle>')
         sys.exit(2)
@@ -27,33 +30,31 @@ def main(argv):
             servo = int(arg)
         elif opt in ("-a", "--angle"):
             angle = int(arg)
-        print('Servo: ', servo)
-        print('Angle: ', angle)
-                                                 
+        elif opt in ("-m", "--min"):
+            pw_min = int(arg)
+        elif opt in ("-M", "--max"):
+            pw_max = int(arg)
+        elif opt in ("-r", "--range"):
+            actuation_range = int(arg)
 
-    # Tower Pro SG-5010
-    # https://www.adafruit.com/product/155
-    #
-    # To control with an Arduino, we suggest connecting the orange control
-    # wire to pin 9 or 10 and using the Servo library included with the
-    # Arduino IDE (see here for an example sketch). Position "0" (1.5ms
-    # pulse) is middle, "90" (~2ms pulse) is all the way to the right,
-    # "-90" (~1ms pulse) is all the way to the left.
-    #
-    # Note that the default servo pulse widths (usually 1ms to 2ms) may
-    # not give you a full 180 degrees of motion. In that case, check if
-    # you can set your servo controller to custom pulse lengths and try
-    # 0.75ms to 2.25ms. You can try shorter/longer pulses but be aware
-    # that if you go too far you could break your servo!
+    print('Servo: ', servo)
+    print('Angle: ', angle)
+    print('Actuation Range: ', actuation_range)
+    print('Pulse Width Range: ', pw_min, "-", pw_max)
 
     # Tower Pro SG-5010 
-    kit.servo[0].activation_range = 180
-    kit.servo[0].set_pulse_width_range(750, 2500)
+    # https://www.adafruit.com/product/155
+    # actuation_range = 180
+    # set_pulse_width_range(750, 2400)
+    # really only gets about 170 degrees total rotation
 
-    # kit.servo[0].angle = 180
-    #sleep(2)
-    #kit.servo[0].angle = 0
+    # HiTec HS-785HB Servo
+    # https://www.servocity.com/hs-785hb-servo
+    # set_puse_range(685, 2070)
+    # actuation_range = 2160 (6 * 360)
 
+    kit.servo[servo].actuation_range = actuation_range
+    kit.servo[servo].set_pulse_width_range(pw_min, pw_max)
     kit.servo[servo].angle = angle
 
 
