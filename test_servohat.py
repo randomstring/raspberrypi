@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 # Test script for controlling a servo motor via a raspberry pi servo hat.
 #
